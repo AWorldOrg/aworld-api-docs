@@ -32,17 +32,17 @@ L'API è organizzata in modo modulare, con endpoint specifici per ogni dominio f
 
 ### Documentazione API
 
-| Sezione                | File                                                | Endpoints                                                            |
-| ---------------------- | --------------------------------------------------- | -------------------------------------------------------------------- |
-| **Authentication**     | [authentication.md](./01-authentication.md)         | Headers richiesti, formati risposta, codici stato, rate limiting     |
-| **Users**              | [users.md](./02-users.md)                           | Get/Update Profile, Get Level, Get Balances, Delete Account          |
-| **Calendar**           | [calendar.md](./03-calendar.md)                     | Get Daily Calendar, Get Calendar Preview, Get Monthly Streak         |
-| **Stories**            | [stories.md](./04-stories.md)                       | Get/List Stories, Submit Progress, Stories Feedback, Popular Stories |
-| **Quiz**               | [quiz.md](./05-quiz.md)                             | Get Quiz, Get Random Quiz, Submit Quiz Answer                        |
-| **Actions**            | [actions.md](./06-actions.md)                       | Get/List Actions, Submit Action, Search Actions                      |
-| **Missions**           | [missions.md](./07-missions.md)                     | Get/List Missions, Submit Mission Progress                           |
-| **Communities**        | [communities.md](./08-communities.md)               | Get/List Communities, Join Community, Community Members              |
-| **Community Missions** | [community-missions.md](./09-community-missions.md) | Get/List CommunityMissions, Join CommunityMission, Leaderboard       |
+| Sezione                | File                                                     | Endpoints                                                            |
+| ---------------------- | -------------------------------------------------------- | -------------------------------------------------------------------- |
+| **Authentication**     | [authentication.md](./docs/01-authentication.md)         | Headers richiesti, formati risposta, codici stato, rate limiting     |
+| **Users**              | [users.md](./docs/02-users.md)                           | Get/Update Profile, Get Level, Get Balances, Delete Account          |
+| **Calendar**           | [calendar.md](./docs/03-calendar.md)                     | Get Daily Calendar, Get Calendar Preview, Get Monthly Streak         |
+| **Stories**            | [stories.md](./docs/04-stories.md)                       | Get/List Stories, Submit Progress, Stories Feedback, Popular Stories |
+| **Quiz**               | [quiz.md](./docs/05-quiz.md)                             | Get Quiz, Get Random Quiz, Submit Quiz Answer                        |
+| **Actions**            | [actions.md](./docs/06-actions.md)                       | Get/List Actions, Submit Action, Search Actions                      |
+| **Missions**           | [missions.md](./docs/07-missions.md)                     | Get/List Missions, Submit Mission Progress                           |
+| **Communities**        | [communities.md](./docs/08-communities.md)               | Get/List Communities, Join Community, Community Members              |
+| **Community Missions** | [community-missions.md](./docs/09-community-missions.md) | Get/List CommunityMissions, Join CommunityMission, Leaderboard       |
 
 ### Specifiche Tecniche
 
