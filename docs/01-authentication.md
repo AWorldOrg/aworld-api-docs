@@ -74,6 +74,92 @@ Il sistema implementa limiti di richieste per proteggere le API.
 }
 ```
 
+### Autenticazione Server-to-Server (OAuth 2.0)
+
+Endpoint per autenticazione tramite OAuth 2.0 utilizzando client credentials flow.
+
+#### Request
+
+```http
+POST /v1/auth/s2s/login
+```
+
+#### Headers
+```
+Content-Type: application/json
+X-Tenant-ID: tenant-123
+```
+
+#### Request Body
+```json
+{
+  "client_id": "string",
+  "client_secret": "string"
+}
+```
+
+#### Response
+```json
+{
+  "status": "success",
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1...",
+    "refreshToken": "eyJhbGciOiJIUzI1...",
+    "idToken": "eyJhbGciOiJIUzI1...",
+    "expiresIn": 3600
+  }
+}
+```
+
+### Single Sign-On (SSO)
+
+#### Inizializzazione SSO
+
+```http
+GET /v1/auth/sso/init
+```
+
+##### Query Parameters
+- `tenant`: ID del tenant
+- `provider`: Provider SSO (es. "azure", "okta")
+- `redirectUrl`: URL di ritorno dopo autenticazione
+
+##### Response
+Redirect all'identity provider configurato per il tenant.
+
+#### Callback SSO
+
+```http
+POST /v1/auth/sso/callback
+```
+
+##### Headers
+```
+Content-Type: application/json
+X-Tenant-ID: tenant-123
+```
+
+##### Request Body
+```json
+{
+  "code": "auth-code-from-provider",
+  "state": "original-state"
+}
+```
+
+##### Response
+```json
+{
+  "status": "success",
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1...",
+    "refreshToken": "eyJhbGciOiJIUzI1...",
+    "idToken": "eyJhbGciOiJIUzI1...",
+    "expiresIn": 3600
+  }
+}
+```
+
 #### Note
 
 - Gli headers di autenticazione sono obbligatori per tutte le richieste
@@ -83,3 +169,5 @@ Il sistema implementa limiti di richieste per proteggere le API.
 - Gli headers di rate limiting sono inclusi in tutte le risposte
 - Tutte le risposte seguono un formato JSON standard
 - Gli errori includono sempre un codice e un messaggio descrittivo
+- Il sistema supporta sia SAML che OIDC per massima compatibilità con provider di identità
+- Per SSO è necessaria una configurazione preventiva del provider per il tenant
