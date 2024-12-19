@@ -1,6 +1,6 @@
 ## Actions API
 
-[Back to Index](./README.md)
+[Back to Index](./../README.md)
 
 Questa sezione descrive gli endpoint REST API per la gestione delle azioni.
 

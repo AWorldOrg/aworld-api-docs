@@ -1,6 +1,6 @@
 ## Authentication API
 
-[Back to Index](./README.md)
+[Back to Index](./../README.md)
 
 Questa sezione descrive i meccanismi di autenticazione e le regole comuni per tutte le API REST.
 

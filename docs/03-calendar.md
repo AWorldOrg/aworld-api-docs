@@ -1,6 +1,6 @@
 ## Calendar API
 
-[Back to Index](./README.md)
+[Back to Index](./../README.md)
 
 Questa sezione descrive gli endpoint REST API per la gestione del calendario e delle attività giornaliere.
 
