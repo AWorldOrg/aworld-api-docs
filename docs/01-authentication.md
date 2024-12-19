@@ -54,7 +54,7 @@ Il sistema implementa limiti di richieste per proteggere le API.
 {
   "error": {
     "code": "UNAUTHORIZED",
-    "message": "Missing x-aw-externalId header"
+    "message": "Missing x-aw-uid header"
   }
 }
 ```
