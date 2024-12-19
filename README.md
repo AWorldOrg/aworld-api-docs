@@ -43,6 +43,7 @@ L'API è organizzata in modo modulare, con endpoint specifici per ogni dominio f
 | **Missions**           | [missions.md](./docs/07-missions.md)                     | Get/List Missions, Submit Mission Progress                           |
 | **Communities**        | [communities.md](./docs/08-communities.md)               | Get/List Communities, Join Community, Community Members              |
 | **Community Missions** | [community-missions.md](./docs/09-community-missions.md) | Get/List CommunityMissions, Join CommunityMission, Leaderboard       |
+| **News**               | [news.md](./docs/10-news.md)                             | Get News, List Live News, List Past News, Submit News Quiz Answer    |
 
 ### Specifiche Tecniche
 
