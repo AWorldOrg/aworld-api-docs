@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="./assets/aw_logo.png" alt="AWorld Logo" width="200"/>
+</div>
+
 ## AWorld REST API Documentation
 
 ### Introduzione
