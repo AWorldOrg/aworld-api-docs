@@ -66,7 +66,17 @@ Tutte le richieste richiedono i seguenti headers:
 #### URL Base
 Tutti gli endpoint iniziano con:
 ```
-https://api.example.com/v1
+https://api.aworld.cloud/v1
+```
+
+Tutti gli endpoint in ambiente di sviluppo iniziano con:
+```
+https://dev.api.aworld.cloud/v1
+```
+
+L'eventuale ambiente di staging risponderà invece al seguente URL
+```
+https://staging.api.aworld.cloud/v1
 ```
 
 #### Paginazione
