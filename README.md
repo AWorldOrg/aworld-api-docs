@@ -1,4 +1,6 @@
-<h1><img src="./assets/aw_logo.png" alt="AWorld Logo" width="35" style="vertical-align: middle"/> AWorld REST API Documentation</h1>
+<img src="./assets/aw_logo.png" alt="AWorld Logo" width="35" style="vertical-align: middle" />
+
+## AWorld REST API Documentation
 
 ### Introduzione
 
