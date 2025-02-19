@@ -1,0 +1,1055 @@
+openapi: 3.0.0
+info:
+  title: AWorld API
+  description: API REST per l'applicazione AWorld
+  version: 1.0.0
+  license:
+    name: CC0-1.0
+    url: https://github.com/AWorldOrg/aworld-api-docs/blob/main/LICENSE
+
+servers:
+  - url: https://api.aworld.org/v1
+    description: Server di produzione
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Token JWT ottenuto tramite autenticazione
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Codice di errore
+        message:
+          type: string
+          description: Messaggio di errore
+      required:
+        - code
+        - message
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email dell'utente
+        password:
+          type: string
+          format: password
+          description: Password dell'utente
+      required:
+        - email
+        - password
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Token JWT per l'autenticazione
+        refreshToken:
+          type: string
+          description: Token per il refresh dell'autenticazione
+      required:
+        - token
+        - refreshToken
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID univoco dell'utente
+        email:
+          type: string
+          format: email
+          description: Email dell'utente
+        username:
+          type: string
+          description: Nome utente
+        name:
+          type: string
+          description: Nome completo dell'utente
+        avatar:
+          type: string
+          format: uri
+          description: URL dell'immagine avatar
+        createdAt:
+          type: string
+          format: date-time
+          description: Data di creazione dell'account
+        updatedAt:
+          type: string
+          format: date-time
+          description: Data dell'ultimo aggiornamento
+      required:
+        - id
+        - email
+        - username
+        - createdAt
+        - updatedAt
+
+    UpdateUserProfile:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Nuovo nome utente
+        name:
+          type: string
+          description: Nuovo nome completo
+        avatar:
+          type: string
+          format: uri
+          description: Nuovo URL dell'avatar
+
+    CalendarDay:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          description: Data del giorno
+        activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
+          description: Lista delle attività del giorno
+      required:
+        - date
+        - activities
+
+    Activity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID univoco dell'attività
+        title:
+          type: string
+          description: Titolo dell'attività
+        description:
+          type: string
+          description: Descrizione dettagliata dell'attività
+        startTime:
+          type: string
+          format: time
+          description: Ora di inizio dell'attività (formato HH:mm)
+        endTime:
+          type: string
+          format: time
+          description: Ora di fine dell'attività (formato HH:mm)
+        completed:
+          type: boolean
+          description: Indica se l'attività è stata completata
+        createdAt:
+          type: string
+          format: date-time
+          description: Data di creazione dell'attività
+        updatedAt:
+          type: string
+          format: date-time
+          description: Data dell'ultimo aggiornamento
+      required:
+        - id
+        - title
+        - startTime
+        - endTime
+        - completed
+        - createdAt
+        - updatedAt
+
+    CreateActivity:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Titolo dell'attività
+        description:
+          type: string
+          description: Descrizione dettagliata dell'attività
+        startTime:
+          type: string
+          format: time
+          description: Ora di inizio dell'attività (formato HH:mm)
+        endTime:
+          type: string
+          format: time
+          description: Ora di fine dell'attività (formato HH:mm)
+      required:
+        - title
+        - startTime
+        - endTime
+
+    UpdateActivity:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nuovo titolo dell'attività
+        description:
+          type: string
+          description: Nuova descrizione dell'attività
+        startTime:
+          type: string
+          format: time
+          description: Nuova ora di inizio (formato HH:mm)
+        endTime:
+          type: string
+          format: time
+          description: Nuova ora di fine (formato HH:mm)
+        completed:
+          type: boolean
+          description: Nuovo stato di completamento
+
+    Story:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID univoco della storia
+        title:
+          type: string
+          description: Titolo della storia
+        content:
+          type: string
+          description: Contenuto della storia
+        author:
+          $ref: '#/components/schemas/UserProfile'
+        tags:
+          type: array
+          items:
+            type: string
+          description: Lista di tag associati alla storia
+        likes:
+          type: integer
+          description: Numero di mi piace ricevuti
+        createdAt:
+          type: string
+          format: date-time
+          description: Data di creazione della storia
+        updatedAt:
+          type: string
+          format: date-time
+          description: Data dell'ultimo aggiornamento
+      required:
+        - id
+        - title
+        - content
+        - author
+        - tags
+        - likes
+        - createdAt
+        - updatedAt
+
+    CreateStory:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Titolo della storia
+        content:
+          type: string
+          description: Contenuto della storia
+        tags:
+          type: array
+          items:
+            type: string
+          description: Lista di tag da associare alla storia
+      required:
+        - title
+        - content
+
+    UpdateStory:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nuovo titolo della storia
+        content:
+          type: string
+          description: Nuovo contenuto della storia
+        tags:
+          type: array
+          items:
+            type: string
+          description: Nuova lista di tag
+
+    StoriesList:
+      type: object
+      properties:
+        stories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Story'
+          description: Lista delle storie
+        total:
+          type: integer
+          description: Numero totale di storie disponibili
+        page:
+          type: integer
+          description: Numero della pagina corrente
+        pageSize:
+          type: integer
+          description: Numero di storie per pagina
+      required:
+        - stories
+        - total
+        - page
+        - pageSize
+
+    Quiz:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID univoco del quiz
+        title:
+          type: string
+          description: Titolo del quiz
+        description:
+          type: string
+          description: Descrizione del quiz
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+          description: Lista delle domande del quiz
+        createdAt:
+          type: string
+          format: date-time
+          description: Data di creazione del quiz
+        updatedAt:
+          type: string
+          format: date-time
+          description: Data dell'ultimo aggiornamento
+      required:
+        - id
+        - title
+        - questions
+        - createdAt
+        - updatedAt
+
+    Question:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID univoco della domanda
+        text:
+          type: string
+          description: Testo della domanda
+        options:
+          type: array
+          items:
+            type: string
+          description: Lista delle possibili risposte
+        correctOption:
+          type: integer
+          description: Indice (0-based) dell'opzione corretta
+      required:
+        - id
+        - text
+        - options
+        - correctOption
+
+    QuizResult:
+      type: object
+      properties:
+        quizId:
+          type: string
+          format: uuid
+          description: ID del quiz completato
+        score:
+          type: integer
+          description: Punteggio ottenuto
+        totalQuestions:
+          type: integer
+          description: Numero totale di domande
+        correctAnswers:
+          type: integer
+          description: Numero di risposte corrette
+        completedAt:
+          type: string
+          format: date-time
+          description: Data e ora di completamento
+      required:
+        - quizId
+        - score
+        - totalQuestions
+        - correctAnswers
+        - completedAt
+
+    QuizAnswer:
+      type: object
+      properties:
+        answers:
+          type: array
+          items:
+            type: object
+            properties:
+              questionId:
+                type: string
+                format: uuid
+                description: ID della domanda
+              selectedOption:
+                type: integer
+                description: Indice dell'opzione selezionata
+            required:
+              - questionId
+              - selectedOption
+          description: Lista delle risposte date
+      required:
+        - answers
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Autenticazione
+      summary: Login utente
+      description: Effettua il login di un utente e restituisce i token di autenticazione
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login effettuato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Dati di login non validi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Credenziali non valide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/refresh:
+    post:
+      tags:
+        - Autenticazione
+      summary: Refresh token
+      description: Rinnova il token di autenticazione usando il refresh token
+      operationId: refreshToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+                  description: Refresh token precedentemente ottenuto
+              required:
+                - refreshToken
+      responses:
+        '200':
+          description: Token rinnovato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Refresh token non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/me:
+    get:
+      tags:
+        - Utenti
+      summary: Ottieni profilo utente
+      description: Recupera il profilo dell'utente autenticato
+      operationId: getUserProfile
+      responses:
+        '200':
+          description: Profilo utente recuperato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Utenti
+      summary: Aggiorna profilo utente
+      description: Aggiorna il profilo dell'utente autenticato
+      operationId: updateUserProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserProfile'
+      responses:
+        '200':
+          description: Profilo utente aggiornato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          description: Dati di aggiornamento non validi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /calendar/daily/{date}:
+    get:
+      tags:
+        - Calendario
+      summary: Ottieni calendario giornaliero
+      description: Recupera le attività programmate per una specifica data
+      operationId: getDailyCalendar
+      parameters:
+        - name: date
+          in: path
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Data per cui recuperare le attività (formato YYYY-MM-DD)
+      responses:
+        '200':
+          description: Calendario giornaliero recuperato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarDay'
+        '400':
+          description: Formato data non valido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - Calendario
+      summary: Crea nuova attività
+      description: Aggiunge una nuova attività al calendario per una specifica data
+      operationId: createActivity
+      parameters:
+        - name: date
+          in: path
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Data per cui creare l'attività (formato YYYY-MM-DD)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateActivity'
+      responses:
+        '201':
+          description: Attività creata con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity'
+        '400':
+          description: Dati attività non validi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /calendar/activities/{activityId}:
+    patch:
+      tags:
+        - Calendario
+      summary: Aggiorna attività
+      description: Modifica i dettagli di un'attività esistente
+      operationId: updateActivity
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID dell'attività da aggiornare
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateActivity'
+      responses:
+        '200':
+          description: Attività aggiornata con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity'
+        '400':
+          description: Dati aggiornamento non validi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Attività non trovata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Calendario
+      summary: Elimina attività
+      description: Rimuove un'attività dal calendario
+      operationId: deleteActivity
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID dell'attività da eliminare
+      responses:
+        '204':
+          description: Attività eliminata con successo
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Attività non trovata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /stories:
+    get:
+      tags:
+        - Storie
+      summary: Lista storie
+      description: Recupera la lista delle storie con paginazione
+      operationId: getStories
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Numero della pagina da recuperare
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+          description: Numero di storie per pagina
+        - name: tag
+          in: query
+          schema:
+            type: string
+          description: Filtra storie per tag
+      responses:
+        '200':
+          description: Lista storie recuperata con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoriesList'
+        '400':
+          description: Parametri di paginazione non validi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - Storie
+      summary: Crea storia
+      description: Crea una nuova storia
+      operationId: createStory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStory'
+      responses:
+        '201':
+          description: Storia creata con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Story'
+        '400':
+          description: Dati storia non validi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /stories/{storyId}:
+    get:
+      tags:
+        - Storie
+      summary: Dettaglio storia
+      description: Recupera i dettagli di una specifica storia
+      operationId: getStory
+      parameters:
+        - name: storyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID della storia da recuperare
+      responses:
+        '200':
+          description: Storia recuperata con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Story'
+        '404':
+          description: Storia non trovata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Storie
+      summary: Aggiorna storia
+      description: Modifica i dettagli di una storia esistente
+      operationId: updateStory
+      parameters:
+        - name: storyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID della storia da aggiornare
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStory'
+      responses:
+        '200':
+          description: Storia aggiornata con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Story'
+        '400':
+          description: Dati aggiornamento non validi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Utente non autorizzato a modificare questa storia
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Storia non trovata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Storie
+      summary: Elimina storia
+      description: Rimuove una storia
+      operationId: deleteStory
+      parameters:
+        - name: storyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID della storia da eliminare
+      responses:
+        '204':
+          description: Storia eliminata con successo
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Utente non autorizzato a eliminare questa storia
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Storia non trovata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /stories/{storyId}/like:
+    post:
+      tags:
+        - Storie
+      summary: Metti mi piace
+      description: Aggiunge un mi piace a una storia
+      operationId: likeStory
+      parameters:
+        - name: storyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID della storia a cui mettere mi piace
+      responses:
+        '200':
+          description: Mi piace aggiunto con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Story'
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Storia non trovata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Storie
+      summary: Rimuovi mi piace
+      description: Rimuove il mi piace da una storia
+      operationId: unlikeStory
+      parameters:
+        - name: storyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID della storia da cui rimuovere il mi piace
+      responses:
+        '200':
+          description: Mi piace rimosso con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Story'
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Storia non trovata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /quiz:
+    get:
+      tags:
+        - Quiz
+      summary: Lista quiz
+      description: Recupera la lista dei quiz disponibili
+      operationId: getQuizzes
+      responses:
+        '200':
+          description: Lista quiz recuperata con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quiz'
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /quiz/{quizId}:
+    get:
+      tags:
+        - Quiz
+      summary: Dettaglio quiz
+      description: Recupera i dettagli di un quiz specifico
+      operationId: getQuiz
+      parameters:
+        - name: quizId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID del quiz da recuperare
+      responses:
+        '200':
+          description: Quiz recuperato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quiz'
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Quiz non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /quiz/{quizId}/submit:
+    post:
+      tags:
+        - Quiz
+      summary: Invia risposte
+      description: Invia le risposte a un quiz e ottiene il risultato
+      operationId: submitQuiz
+      parameters:
+        - name: quizId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID del quiz da completare
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizAnswer'
+      responses:
+        '200':
+          description: Quiz completato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizResult'
+        '400':
+          description: Risposte non valide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Utente non autenticato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Quiz non trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+security:
+  - BearerAuth: []
